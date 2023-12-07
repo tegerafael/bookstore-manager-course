@@ -2,7 +2,7 @@ package com.tiagorafael.bookstoremanager.controller;
 
 import com.tiagorafael.bookstoremanager.dto.MessageResponseDTO;
 import com.tiagorafael.bookstoremanager.entity.Book;
-import com.tiagorafael.bookstoremanager.repository.BookRepository;
+import com.tiagorafael.bookstoremanager.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,18 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/books")
 public class BookController {
 
-    private BookRepository bookRespository;
+    private BookService bookService;
 
     @Autowired
-    public BookController(BookRepository bookRespository) {
-        this.bookRespository = bookRespository;
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @PostMapping
     public MessageResponseDTO create(@RequestBody Book book) {
-        Book savedBook = bookRespository.save(book);
-        return MessageResponseDTO.builder()
-                .message("Book create with ID " + savedBook.getId())
-                .build();
+        return bookService.create(book);
     }
 }
